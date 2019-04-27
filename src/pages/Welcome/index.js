@@ -1,14 +1,41 @@
 import React, { Component } from 'react';
 
 import {
-  View, Text, TextInput, TouchableOpacity, StatusBar,
+  View, Text, TextInput, TouchableOpacity, StatusBar, AsyncStorage,
 } from 'react-native';
 
-// import { Container } from './styles';
+import api from '~/services/api';
+
 import styles from './style';
 
 export default class Welcome extends Component {
+  state = {
+    username: '',
+  };
+
+  // checando se usuario existe na base do github
+  checkUserExists = async (username) => {
+    const user = await api.get(`/users/${username}`);
+    return user;
+  };
+
+  saveUser = async (username) => {
+    await AsyncStorage.setItem('@githuber:username', username);
+  };
+
+  signIn = async () => {
+    const { username } = this.state;
+
+    try {
+      await this.checkUserExists(username);
+      await this.saveUser(username);
+    } catch (err) {
+      console.log('Usuário não existe');
+    }
+  };
+
   render() {
+    const { username } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
@@ -24,10 +51,12 @@ export default class Welcome extends Component {
             autoCorrect={false}
             placeholder="Digite seu usuário"
             underlineColorAndroid="transparent"
+            value={username}
+            onChangeText={text => this.setState({ username: text })}
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <TouchableOpacity style={styles.button} onPress={this.signIn}>
           <Text style={styles.buttonText}>Prosseguir</Text>
         </TouchableOpacity>
       </View>
