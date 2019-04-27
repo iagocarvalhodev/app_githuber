@@ -19,18 +19,22 @@ export default class Welcome extends Component {
     return user;
   };
 
+  // se usuario existir salva o username no store da aplicação
   saveUser = async (username) => {
     await AsyncStorage.setItem('@githuber:username', username);
   };
 
   signIn = async () => {
     const { username } = this.state;
+    const { navigation } = this.props;
 
     try {
       await this.checkUserExists(username);
       await this.saveUser(username);
+
+      navigation.navigate('Repositories');
     } catch (err) {
-      console.log('Usuário não existe');
+      console.tron.log('Usuário não existe');
     }
   };
 
