@@ -12,7 +12,7 @@ import Header from '~/components/Header';
 const Organizations = () => (
   <View>
     <Header title="Organizações" />
-    <Text>Repositories</Text>
+    <Text>Organizações</Text>
   </View>
 );
 
