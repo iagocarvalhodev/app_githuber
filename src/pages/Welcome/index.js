@@ -29,7 +29,7 @@ export default class Welcome extends Component {
 
   // se usuario existir salva o username no store da aplicação
   saveUser = async (username) => {
-    await AsyncStorage.setItem('@githuber:username', username);
+    await AsyncStorage.setItem('@Githuber:username', username);
   };
 
   signIn = async () => {
